@@ -15,12 +15,14 @@
             if($result -> num_rows == 1){
                 $data = $result -> fetch_assoc();
 
+                $_SESSION['logged'] = true;
                 $_SESSION['firstName'] = $data['first_name'];
                 $_SESSION['lastName'] = $data['last_name'];
                 $_SESSION['wallet'] = $data['wallet'];
                 $_SESSION['rentedBikes'] = $data['rented_bikes'];
 
                 $result -> free_result();
+                unset($_SESSION['error']);
                 header("Location: view/html/user.php");
             }else{
                 $_SESSION['error'] = '<span class="error">Nieprawidlowy login lub haslo</span>';

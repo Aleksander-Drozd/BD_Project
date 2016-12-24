@@ -23,5 +23,6 @@ session_start();
     echo $_SESSION['rentedBikes'];
     ?>
     </p>
+    <a href="../../logout.php">Wyloguj sie</a>
 </body>
 </html>
