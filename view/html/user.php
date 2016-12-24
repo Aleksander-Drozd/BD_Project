@@ -13,14 +13,15 @@ session_start();
         echo $_SESSION['firstName']." ".$_SESSION['lastName'];
         ?>
     </h1>
-    Stan portfela:
+    <p>Stan portfela:
     <?php
     echo $_SESSION['wallet'];
     ?>
-    <br>
-    Wypozyczonych rowerow:
+    </p>
+    <p>Wypozyczonych rowerow:
     <?php
     echo $_SESSION['rentedBikes'];
     ?>
+    </p>
 </body>
 </html>
