@@ -27,6 +27,6 @@
         ?>
         <input type="submit" value="Zaloguj"><br>
     </form>
-        Nie masz konta? <a href="registration.html">Zarejestruj sie</a>
+        Nie masz konta? <a href="registration.php">Zarejestruj sie</a>
 </body>
 </html>
