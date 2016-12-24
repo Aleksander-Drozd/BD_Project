@@ -1,0 +1,8 @@
+body{
+    margin: 20px;
+    background-color: #CBCBCB;
+}
+label{
+    width: 140px;
+    float: left;
+}
