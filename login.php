@@ -22,10 +22,11 @@
 
                 $result -> free_result();
                 header("Location: view/html/user.php");
+            }else{
+                $_SESSION['error'] = '<span class="error">Nieprawidlowy login lub haslo</span>';
+                header("Location: view/html/index.php");
             }
-        }else
-            echo "Blad polaczenia z baza danych";
-
+        }
 
         $dbConnection -> close();
     }
