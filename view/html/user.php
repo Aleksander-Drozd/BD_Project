@@ -14,18 +14,18 @@
 <body>
     <h1>
         <?php
-        echo $_SESSION['firstName']." ".$_SESSION['lastName'];
+            echo $_SESSION['firstName']." ".$_SESSION['lastName'];
         ?>
     </h1>
     <p>Stan portfela:
-    <?php
-    echo $_SESSION['wallet'];
-    ?>
+        <?php
+            echo $_SESSION['wallet'];
+        ?>
     </p>
     <p>Wypozyczonych rowerow:
-    <?php
-    echo $_SESSION['rentedBikes'];
-    ?>
+        <?php
+            echo $_SESSION['rentedBikes'];
+        ?>
     </p>
     <a href="../../logout.php">Wyloguj sie</a>
 </body>
