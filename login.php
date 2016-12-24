@@ -2,8 +2,8 @@
     require_once "databaseConnect.php";
     session_start();
 
-    if(!isset($_SESSION['email']) || !isset($_SESSION['password'])){
-        header("Location: index.php");
+    if(!isset($_POST['email']) || !isset($_POST['password'])){
+        header("Location: view/html/index.php");
         exit();
     }
     $email = $_POST['email'];
@@ -19,7 +19,9 @@
     else{
         $query = "Select * from customers where email='$email' and password='$password'";
 
-        if($result = @$dbConnection -> query($query)){
+        if($result = @$dbConnection -> query(sprintf("Select * from customers where email='%s' and password='%s'",
+                                                mysqli_real_escape_string($dbConnection, $email),
+                                                mysqli_real_escape_string($dbConnection, $password)))){
             if($result -> num_rows == 1){
                 $data = $result -> fetch_assoc();
 
