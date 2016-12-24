@@ -1,6 +1,11 @@
 <?php
     require_once "databaseConnect.php";
     session_start();
+
+    if(!isset($_SESSION['email']) || !isset($_SESSION[$password])){
+        header("Location: index.php");
+        exit();
+    }
     $email = $_POST['email'];
     $password = $_POST['password'];
 

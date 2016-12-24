@@ -1,5 +1,9 @@
 <?php
-session_start();
+    session_start();
+    if(!isset($_SESSION['logged'])){
+        header("Location: index.php");
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="pl">
