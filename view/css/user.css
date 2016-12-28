@@ -1,0 +1,93 @@
+.containter {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid #933a5d 2px;
+}
+.navigation {
+    min-width: 200px;
+    display: inline-block;
+    border: solid #bada55 2px;
+    background-color: #bababa;
+}
+
+.rents {
+    width: 770px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+
+
+.navigation__list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-info {
+    min-width: 200px;
+    height: 110px;
+}
+
+.user-info__user-name {
+    /* Zmienic czcionke */
+    font-family: "Times New Roman", serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 5px;
+    text-align: center;
+}
+
+.user-info__details {
+    font-family: Arial serif;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.user-info__logout-button {
+    text-decoration: none;
+    display: block;
+    width: 90px;
+    height: 20px;
+    padding: 3px;
+    margin: 5px auto;
+    color: #d4d4d4;
+    background-color: #3f3f3f;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    display: block;
+    width: 196px;
+    height: 16px;
+    padding: 10px;
+    margin: 0;
+    color: #d4d4d4;
+    background-color: #3f3f3f;
+    border: solid #3f3f3f 2px;
+}
+
+.nav-link:hover {
+    border: solid #e1e1e1 2px;
+    color: #e1e1e1;
+}
+
+
+
+.rents__rent {
+    width: 70%;
+    margin: 20px auto;
+    border: solid black 2px;
+    border-radius: 10px;
+    background: linear-gradient(#747474, #cbcbcb);
+}
+
+.rents__rent-label {
+    display: inline-block;
+    width: 45%;
+    margin: 5px;
+}
