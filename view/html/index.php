@@ -16,9 +16,9 @@
         <h1>Wypozyczalnia rowerow</h1>
         <form action="../../login.php" method="post">
             <label for="login-input">E-mail:</label> <br>
-            <input type="email" id="login-input" name="email"><br>
+            <input type="email" id="login-input" name="email" value="test@test.com"><br>
             <label for="password-input">Haslo:</label> <br>
-            <input type="password" id="password-input" name="password"><br>
+            <input type="password" id="password-input" name="password" value="test"><br>
             <?php
                 if(isset($_SESSION['error'])){
                     echo $_SESSION['error']."<br>";

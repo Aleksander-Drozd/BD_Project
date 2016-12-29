@@ -19,8 +19,6 @@
     if($dbConnection -> connect_errno != 0)
         echo "Blad polaczenia z baza danych";
     else{
-        $query = "Select * from customers where email='$email' and password='$password'";
-
         if($result = @$dbConnection -> query(sprintf("Select * from customers where email='%s' and password='%s'",
                                                 mysqli_real_escape_string($dbConnection, $email),
                                                 mysqli_real_escape_string($dbConnection, $password)))){
@@ -28,12 +26,31 @@
                 $data = $result -> fetch_assoc();
 
                 $_SESSION['logged'] = true;
+                $_SESSION['id'] = $data['id'];
                 $_SESSION['firstName'] = $data['first_name'];
                 $_SESSION['lastName'] = $data['last_name'];
                 $_SESSION['wallet'] = $data['wallet'];
                 $_SESSION['rentedBikes'] = $data['rented_bikes'];
 
                 $result -> free_result();
+
+                $result = @$dbConnection -> query("SELECT * FROM rents_history WHERE customer_id=".$_SESSION['id']."  AND return_station_id IS NULL");
+
+                if($result -> num_rows > 0){
+                    $array = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $array['rentStationId'] = $row['rent_station_id'];
+                        $array['rentDate'] = $row['rent_date'];
+                        $r = @$dbConnection -> query("select address from stations where id=".$array['rentStationId']);
+                        $d = $r -> fetch_assoc();
+                        $r -> free_result();
+                        $array['rentStationAddress'] = $d['address'];
+
+                        $_SESSION['activeRents'][] = $array;
+                    }
+                }
+                $result -> free_result();
+
                 unset($_SESSION['error']);
                 header("Location: view/html/user.php");
             }else{
