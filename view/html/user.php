@@ -68,38 +68,38 @@ if (!isset($_SESSION['logged'])) {
                     console.log(a);
                 </script>
                 <?php
-                if(!isset($_SESSION['activeRents']))
-                    exit();
-                foreach ($_SESSION['activeRents'] as $rent){
-                    echo <<< EOT
-                    <div class="rents__rent rents__rent--active">
-                        <div class="rents__rent-info">
-                            <span class="rents__rent-label">Data wypozyczenia:
-                                <span class="rents__rent-date">{$rent['rentDate']}</span>
+                print_r($_SESSION['activeRents']);
+                if(isset($_SESSION['activeRents']))
+                    foreach ($_SESSION['activeRents'] as $rent){
+                        echo <<< EOT
+                        <div class="rents__rent rents__rent--active">
+                            <div class="rents__rent-info">
+                                <span class="rents__rent-label">Data wypozyczenia:
+                                    <span class="rents__rent-date">{$rent['rentDate']}</span>
+                                </span>
+                                <span class="rents__rent-label">Stacja wypozyczenia:
+                                    <span class="rents__rent-station"> {$rent['rentStationAddress']}</span>
+                                </span>
+                            </div>
+                            <div class="rents__rent-info">
+                                <span class="rents__rent-label">Data oddania:
+                                    <span class="rents__rent-date">--</span>
+                                </span>
+                                <span class="rents__rent-label">Stacja oddania:
+                                    <span class="rents__rent-station">--</span>
+                                </span>
+                            </div>
+                            <span class="rents__rent-label">
+                                <form action="../../returnBike.php" method="post">
+                                    <button name="return" value="{$rent['rentId']}">Oddawaj!</button>
+                                </form>
                             </span>
-                            <span class="rents__rent-label">Stacja wypozyczenia:
-                                <span class="rents__rent-station"> {$rent['rentStationAddress']}</span>
+                            <span class="rents__rent-label">Oplata:
+                                <span class="rents__rent-cost"></span>
                             </span>
                         </div>
-                        <div class="rents__rent-info">
-                            <span class="rents__rent-label">Data oddania:
-                                <span class="rents__rent-date">--</span>
-                            </span>
-                            <span class="rents__rent-label">Stacja oddania:
-                                <span class="rents__rent-station">--</span>
-                            </span>
-                        </div>
-                        <span class="rents__rent-label">
-                            <form action="#" method="post">
-                                <button name="return" value="">Oddawaj!</button>
-                            </form>
-                        </span>
-                        <span class="rents__rent-label">Oplata:
-                            <span class="rents__rent-cost"></span>
-                        </span>
-                    </div>
 EOT;
-                }
+                    }
                 ?>
             </main>
 

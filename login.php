@@ -37,10 +37,12 @@
                 $result = @$dbConnection -> query("SELECT * FROM rents_history WHERE customer_id=".$_SESSION['id']."  AND return_station_id IS NULL");
 
                 if($result -> num_rows > 0){
-                    $array = array();
+                    $_SESSION['activeRents'] = array();
                     while ($row = mysqli_fetch_assoc($result)) {
+                        $array = array();
                         $array['rentStationId'] = $row['rent_station_id'];
                         $array['rentDate'] = $row['rent_date'];
+                        $array['rentId'] = $row['id'];
                         $r = @$dbConnection -> query("select address from stations where id=".$array['rentStationId']);
                         $d = $r -> fetch_assoc();
                         $r -> free_result();
