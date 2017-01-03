@@ -11,7 +11,7 @@ if (!isset($_SESSION['logged'])) {
         <meta charset="UTF-8">
         <title>Panel uzytkownika</title>
 
-        <link rel="stylesheet" href="../css/user.css">
+        <link rel="stylesheet" href="../css/main-theme.css">
     </head>
     <body>
 
@@ -47,13 +47,16 @@ if (!isset($_SESSION['logged'])) {
                         </div>
                     </li>
                     <li>
-                        <a href="#" class="nav-link">Wypozycz rower</a>
+                        <a href="user.php" class="nav-link">Panel glowny</a>
+                    </li>
+                    <li>
+                        <a href="rent-bike.php" class="nav-link">Wypozycz rower</a>
                     </li>
                     <li>
                         <a href="#" class="nav-link">Historia wypozyczen</a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link">Zarzadzaj portfelem</a>
+                        <a href="wallet.php" class="nav-link">Zarzadzaj portfelem</a>
                     </li>
                     <li>
                         <a href="#" class="nav-link">Moje konto</a>
@@ -99,4 +102,5 @@ EOT;
 
         </div>
     </body>
+
 </html>
