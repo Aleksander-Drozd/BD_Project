@@ -62,13 +62,7 @@ if (!isset($_SESSION['logged'])) {
             </nav>
 
             <main class="rents">
-                <script rel="script">
-                    var a = <?php json_encode($_SESSION['rents']);
-                    ?>
-                    console.log(a);
-                </script>
                 <?php
-                print_r($_SESSION['activeRents']);
                 if(isset($_SESSION['activeRents']))
                     foreach ($_SESSION['activeRents'] as $rent){
                         echo <<< EOT

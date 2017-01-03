@@ -1,10 +1,17 @@
 <?php
     session_start();
+
+    if(!isset($_POST['return'])){
+        header("Location: view/html/user.php");
+        exit();
+    }
+    
     $rentId = $_POST['return'];
 
-    foreach ($_SESSION['activeRents'] as $rent){
+    foreach ($_SESSION['activeRents'] as $index => $rent){
         if($rent['rentId'] == $rentId){
-            unset($_SESSION['activeRents'][array_search($rent, $_SESSION['activeRents'])]);
+            unset($_SESSION['activeRents'][$index]);
             header("Location: view/html/user.php");
+            exit();
         }
     }
