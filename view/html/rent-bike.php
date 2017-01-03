@@ -53,7 +53,7 @@ if (!isset($_SESSION['logged'])) {
                     <a href="rent-bike.php" class="nav-link">Wypozycz rower</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link">Historia wypozyczen</a>
+                    <a href="rents-history.php" class="nav-link">Historia wypozyczen</a>
                 </li>
                 <li>
                     <a href="wallet.php" class="nav-link">Zarzadzaj portfelem</a>
