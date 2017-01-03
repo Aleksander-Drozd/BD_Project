@@ -33,16 +33,16 @@ if (!isset($_SESSION['logged'])) {
                         </p>
                         Stan portfela:
                         <span class="user-info__details">
-                                <?php
-                                echo $_SESSION['wallet'].'zl';
-                                ?>
-                            </span><br>
+                            <?php
+                            echo $_SESSION['wallet'].'zl';
+                            ?>
+                        </span><br>
                         Wypozyczonych rowerow:
                         <span class="user-info__details">
-                                <?php
-                                echo $_SESSION['rentedBikes'];
-                                ?>
-                            </span>
+                            <?php
+                            echo $_SESSION['rentedBikes'];
+                            ?>
+                        </span>
                         <a class="user-info__logout-button" href="../../logout.php">Wyloguj sie</a>
                     </div>
                 </li>
@@ -65,16 +65,23 @@ if (!isset($_SESSION['logged'])) {
         </nav>
 
         <main class="rents">
-
             <form action="../../rent.php" method="post">
+
                 <label for="stations">Wybierz stacje: </label>
                 <select name="stations" id="stations">
                     <?php
+                    require_once '../../databaseConnect.php';
+                    $dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
 
-                    echo '<option value="20">ul. Marianska 15</option>';
-                    echo '<option value="10">ul. Malopanewska 1</option>';
-                    echo '<option value="5">ul. Danilowskiego 13a</option>';
-
+                    if($dbConnection -> connect_errno != 0)
+                        echo "Blad polaczenia z baza danych";
+                    else if ($result = @$dbConnection -> query('SELECT * FROM stations')) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo "<option value=\"{$row['id']}\">{$row['address']}</option>";
+                        }
+                        $result -> free_result();
+                    }
+                    $dbConnection -> close();
                     ?>
                 </select>
                 <button>Wypozycz</button>
@@ -91,8 +98,6 @@ if (!isset($_SESSION['logged'])) {
                 }
             ?>
 
-
         </main>
-
     </body>
 </html>

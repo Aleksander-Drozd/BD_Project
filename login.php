@@ -2,8 +2,6 @@
     require_once "databaseConnect.php";
     session_start();
 
-    echo 'Hello';
-
     if(!isset($_POST['email']) || !isset($_POST['password'])){
         header("Location: view/html/index.php");
         exit();

@@ -28,21 +28,21 @@ if (!isset($_SESSION['logged'])) {
                         <div class="user-info">
                             <p class="user-info__user-name">
                                 <?php
-                                    echo $_SESSION['firstName'] . " " . $_SESSION['lastName'];
-                                    ?>
+                                echo $_SESSION['firstName'] . " " . $_SESSION['lastName'];
+                                ?>
                             </p>
                             Stan portfela:
                             <span class="user-info__details">
-                                        <?php
-                                        echo $_SESSION['wallet'].'zl';
-                                        ?>
-                                    </span><br>
+                                <?php
+                                echo $_SESSION['wallet'].'zl';
+                                ?>
+                            </span><br>
                             Wypozyczonych rowerow:
                             <span class="user-info__details">
-                                        <?php
-                                        echo $_SESSION['rentedBikes'];
-                                        ?>
-                                    </span>
+                                <?php
+                                echo $_SESSION['rentedBikes'];
+                                ?>
+                            </span>
                             <a class="user-info__logout-button" href="../../logout.php">Wyloguj sie</a>
                         </div>
                     </li>
