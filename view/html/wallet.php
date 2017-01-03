@@ -68,23 +68,25 @@ if (!isset($_SESSION['logged'])) {
 
                 <div class="wallet-info">
                     <p>Stan konta:
-                        <span> 132,32 zl
+                        <span> 132,32
                             <?php
 
                             ?>
                         </span>
+                        zl
                     </p>
 
                     <p>Zalegle platnosci:
-                        <span> 0 zl
+                        <span> 0
                             <?php
 
                             ?>
                         </span>
+                        zl
                     </p>
 
                     <form action="#" method="post">
-                        <button value="" name="money" onclick="alert( 'Doladowane' );">Doladuj konto</button>
+                        <button class="addFunds" value="" name="money">Doladuj konto</button>
                     </form>
                 </div>
 
@@ -100,6 +102,26 @@ if (!isset($_SESSION['logged'])) {
             </main>
 
         </div>
+
+        <script>
+            const button = document.querySelector( '.addFunds' );
+
+            function addFunds( e ) {
+                e.preventDefault();
+
+                const value = window.prompt( "Podaj kwote doladowania: " );
+                this.value = value;
+
+                const wallet = document.querySelector( '.wallet-info span' );
+
+                const current = parseFloat( wallet.innerHTML.replace( ',', '.' ) );
+                const added = parseFloat( value.replace( ',', '.' ) );
+
+                wallet.innerHTML =  current + added;
+            }
+
+            button.addEventListener( 'click', addFunds );
+        </script>
 
     </body>
 </html>
