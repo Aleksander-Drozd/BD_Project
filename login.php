@@ -38,10 +38,9 @@
                     $_SESSION['activeRents'] = array();
                     while ($row = mysqli_fetch_assoc($result)) {
                         $array = array();
-                        $array['rentStationId'] = $row['rent_station_id'];
                         $array['rentDate'] = $row['rent_date'];
                         $array['rentId'] = $row['id'];
-                        $r = @$dbConnection -> query("select address from stations where id=".$array['rentStationId']);
+                        $r = @$dbConnection -> query("select address from stations where id=".$row['rent_station_id']);
                         $d = $r -> fetch_assoc();
                         $r -> free_result();
                         $array['rentStationAddress'] = $d['address'];

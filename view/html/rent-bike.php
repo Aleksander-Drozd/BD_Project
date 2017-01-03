@@ -12,6 +12,7 @@ if (!isset($_SESSION['logged'])) {
         <title>Wypozycz rower</title>
 
         <link rel="stylesheet" href="../css/main-theme.css">
+        <link rel="stylesheet" href="../css/main-style.css">
     </head>
     <body>
 
@@ -66,7 +67,6 @@ if (!isset($_SESSION['logged'])) {
 
         <main class="rents">
             <form action="../../rent.php" method="post">
-
                 <label for="stations">Wybierz stacje: </label>
                 <select name="stations" id="stations">
                     <?php
@@ -75,9 +75,9 @@ if (!isset($_SESSION['logged'])) {
 
                     if($dbConnection -> connect_errno != 0)
                         echo "Blad polaczenia z baza danych";
-                    else if ($result = @$dbConnection -> query('SELECT * FROM stations')) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<option value=\"{$row['id']}\">{$row['address']}</option>";
+                    else if ($result = @$dbConnection -> query('SELECT * FROM stations ORDER BY address')) {
+                        while ($station = mysqli_fetch_assoc($result)) {
+                            echo "<option value=\"{$station['id']}\">{$station['address']}</option>";
                         }
                         $result -> free_result();
                     }
@@ -86,18 +86,17 @@ if (!isset($_SESSION['logged'])) {
                 </select>
                 <button>Wypozycz</button>
             </form>
-
             <?php
-                if ( isset($_SESSION['rentSuccess']) ) {
-                    echo '<div class="answer">
-                            
-                            Wypozyczono!
-                          </div>';
+            if (isset($_SESSION['rentError'])){
+                echo $_SESSION['rentError'];
+                unset($_SESSION['rentError']);
+            }
 
-                    unset($_SESSION['rentSuccess']);
-                }
+            if(isset($_SESSION['rentSuccess'])) {
+                echo '<div class="answer">Wypozyczono!</div>';
+                unset($_SESSION['rentSuccess']);
+            }
             ?>
-
         </main>
     </body>
 </html>
