@@ -42,19 +42,15 @@ if ($result = @$dbConnection -> query("SELECT id FROM bikes WHERE station_id=$st
 }else
     handleError('Blad systemu');
 
-if ($_SESSION['wallet'] < 10){
+if ($_SESSION['wallet'] < 10)
     handleError('Za malo srodkow na koncie');
-}
+if ($_SESSION['rentedBikes'] > 5)
+    handleError('Wypozyczono maksymalną ilosc rowerow');
 
 $dateTime = new DateTime();
 $currentDateTime =  $dateTime -> format('Y-m-d H:i:s');
 
-//INSERT INTO rents_history (id, customer_id, bike_id, rent_station_id, rent_date, return_station_id, return_date, charge)VALUES (NULL, 1, 3, 1, '2016-12-05 09:15:18', NULL, NULL, NULL);
-//UPDATE 'bikes' SET 'rented' = 0, 'station_id' = NULL WHERE 'id' = 1;
-//UPDATE 'customers' SET 'rented_bikes' = 1 WHERE 'id' = 5;
 $insertRentQuery = "INSERT INTO rents_history (id, customer_id, bike_id, rent_station_id, rent_date, return_station_id, return_date, charge) VALUES (NULL, {$_SESSION['id']}, $bikeId, $stationId, '$currentDateTime', NULL, NULL, NULL);";
-echo $insertRentQuery;
-$incrementedRentedBikes = $_SESSION['rentedBikes'] + 1;
 
 //ToDo Transaction
 
