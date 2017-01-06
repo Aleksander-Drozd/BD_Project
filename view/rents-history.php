@@ -71,7 +71,7 @@ if (!isset($_SESSION['logged'])) {
 
         if($dbConnection -> connect_errno != 0)
             echo "Blad polaczenia z baza danych";
-        else if ($result = @$dbConnection -> query("SELECT * FROM rents_history WHERE customer_id={$_SESSION['id']} AND return_date IS NOT NULL")) {
+        else if ($result = @$dbConnection -> query("SELECT * FROM rents_history WHERE customer_id={$_SESSION['id']} AND return_date IS NOT NULL ORDER BY return_date desc")) {
             while ($rent = mysqli_fetch_assoc($result)) {
                 if ($r = @$dbConnection -> query("SELECT address FROM stations WHERE id={$rent['rent_station_id']}")) {
                     $station = $r -> fetch_assoc();

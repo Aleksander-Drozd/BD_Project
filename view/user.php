@@ -67,8 +67,11 @@ if (!isset($_SESSION['logged'])) {
 
             <main class="rents">
                 <?php
-                if (isset($_SESSION['returnError']))
+                if (isset($_SESSION['returnError'])){
                     echo $_SESSION['returnError'];
+                    unset($_SESSION['returnError']);
+                }
+
 
                 if(isset($_SESSION['activeRents']))
                     require_once '../php/databaseConnect.php';
