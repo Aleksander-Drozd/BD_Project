@@ -12,6 +12,7 @@ if (!isset($_SESSION['logged'])) {
         <title>Panel uzytkownika</title>
 
         <link rel="stylesheet" href="../css/main-theme.css">
+        <link rel="stylesheet" href="../css/main-style.css">
     </head>
     <body>
 
@@ -66,7 +67,24 @@ if (!isset($_SESSION['logged'])) {
 
             <main class="rents">
                 <?php
+                if (isset($_SESSION['returnError']))
+                    echo $_SESSION['returnError'];
+
                 if(isset($_SESSION['activeRents']))
+                    require_once '../php/databaseConnect.php';
+                    $dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
+
+                    if($dbConnection -> connect_errno != 0)
+                        exit('Blad systemu');
+                    else if ($result = @$dbConnection -> query('SELECT * FROM stations ORDER BY address')) {
+                        $stations = array();
+                        while ($station = mysqli_fetch_assoc($result)) {
+                            $stations[] = "<option value=\"{$station['id']}\">{$station['address']}</option>";
+                        }
+                        $result -> free_result();
+                    }
+                    $dbConnection -> close();
+
                     foreach ($_SESSION['activeRents'] as $rent){
                         echo <<< EOT
                         <div class="rents__rent rents__rent--active">
@@ -89,6 +107,14 @@ if (!isset($_SESSION['logged'])) {
                             <span class="rents__rent-label">
                                 <form action="../php/returnBike.php" method="post">
                                     <button name="return" value="{$rent['rentId']}">Oddawaj!</button>
+                                    <label for="stations">Stacja: </label>
+                                    <select name="stations" id="stations">
+EOT;
+                        foreach ($stations as $station)
+                            echo $station;
+
+                        echo <<< EOT
+                                    </select>   
                                 </form>
                             </span>
                             <span class="rents__rent-label">Oplata:
