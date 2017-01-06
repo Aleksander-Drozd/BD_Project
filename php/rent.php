@@ -5,12 +5,12 @@ function handleError($errorMessage) {
     global $dbConnection;
     $_SESSION['rentError'] = '<span class="error">'.$errorMessage.'</span>';
     $dbConnection -> close();
-    header('Location: view/html/rent-bike.php');
+    header('Location: ../view/rent-bike.php');
     exit();
 }
 
 if(!isset($_POST['stations'])){
-    header("Location: view/html/index.php");
+    header("Location: ../view/index.php");
     exit();
 }
 
@@ -83,4 +83,4 @@ $rent['rentDate'] = $currentDateTime;
 $_SESSION['activeRents'][] = $rent;
 
 $dbConnection -> close();
-header("Location: view/html/rent-bike.php");
+header("Location: ../view/rent-bike.php");

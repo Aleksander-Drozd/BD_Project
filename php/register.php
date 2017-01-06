@@ -1,2 +1,2 @@
 <?php
-Header("Location: view/html/register.html");
+Header("Location: ../view/register.html");

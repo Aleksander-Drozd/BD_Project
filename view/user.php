@@ -87,7 +87,7 @@ if (!isset($_SESSION['logged'])) {
                                 </span>
                             </div>
                             <span class="rents__rent-label">
-                                <form action="../../returnBike.php" method="post">
+                                <form action="../php/returnBike.php" method="post">
                                     <button name="return" value="{$rent['rentId']}">Oddawaj!</button>
                                 </form>
                             </span>

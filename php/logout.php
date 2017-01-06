@@ -2,4 +2,4 @@
     session_start();
     session_unset();
 
-    header("Location: view/html/index.php");
+    header("Location: ../view/index.php");

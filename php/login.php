@@ -3,7 +3,7 @@
     session_start();
 
     if(!isset($_POST['email']) || !isset($_POST['password'])){
-        header("Location: view/html/index.php");
+        header("Location: ../view/index.php");
         exit();
     }
     $email = $_POST['email'];
@@ -51,10 +51,10 @@
                 $result -> free_result();
 
                 unset($_SESSION['error']);
-                header("Location: view/html/user.php");
+                header("Location: ../view/user.php");
             }else{
                 $_SESSION['error'] = '<span class="error">Nieprawidlowy login lub haslo</span>';
-                header("Location: view/html/index.php");
+                header("Location: ../view/index.php");
             }
         }
 

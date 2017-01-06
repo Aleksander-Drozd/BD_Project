@@ -2,7 +2,7 @@
     session_start();
 
     if(!isset($_POST['return'])){
-        header("Location: view/html/user.php");
+        header("Location: ../view/user.php");
         exit();
     }
     
@@ -11,7 +11,7 @@
     foreach ($_SESSION['activeRents'] as $index => $rent){
         if($rent['rentId'] == $rentId){
             unset($_SESSION['activeRents'][$index]);
-            header("Location: view/html/user.php");
+            header("Location: ../view/user.php");
             exit();
         }
     }

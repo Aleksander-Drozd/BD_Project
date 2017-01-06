@@ -66,7 +66,7 @@ if (!isset($_SESSION['logged'])) {
 
     <main class="rents">
         <?php
-        require_once '../../databaseConnect.php';
+        require_once '../php/databaseConnect.php';
         $dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
 
         if($dbConnection -> connect_errno != 0)
