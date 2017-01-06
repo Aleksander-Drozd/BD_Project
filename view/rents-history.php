@@ -43,7 +43,7 @@ if (!isset($_SESSION['logged'])) {
                         echo $_SESSION['rentedBikes'];
                         ?>
                     </span>
-                    <a class="user-info__logout-button" href="../../logout.php">Wyloguj sie</a>
+                    <a class="user-info__logout-button" href="../php/logout.php">Wyloguj sie</a>
                 </div>
             </li>
             <li>

@@ -44,7 +44,7 @@ if (!isset($_SESSION['logged'])) {
                             echo $_SESSION['rentedBikes'];
                             ?>
                         </span>
-                        <a class="user-info__logout-button" href="../../logout.php">Wyloguj sie</a>
+                        <a class="user-info__logout-button" href="../php/logout.php">Wyloguj sie</a>
                     </div>
                 </li>
                 <li>
@@ -66,7 +66,7 @@ if (!isset($_SESSION['logged'])) {
         </nav>
 
         <main class="rents">
-            <form action="../../rent.php" method="post">
+            <form action="../php/rent.php" method="post">
                 <label for="stations">Wybierz stacje: </label>
                 <select name="stations" id="stations">
                     <?php

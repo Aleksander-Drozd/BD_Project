@@ -13,7 +13,7 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
         <link rel="stylesheet" href="../css/registration.css">
     </head>
     <body>
-        <form action="../../register.php" method="post">
+        <form action="../php/register.php" method="post">
             <p><label for="first-name-input">Imie</label>
             <input type="text" id="first-name-input" name="firstName"></p>
             <p><label for="first-name-input">Nazwisko</label>

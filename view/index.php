@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Wypozyczalnia rowerow</h1>
-        <form action="../../login.php" method="post">
+        <form action="../php/login.php" method="post">
             <label for="login-input">E-mail:</label> <br>
             <input type="email" id="login-input" name="email" value="test@test.com"><br>
             <label for="password-input">Haslo:</label> <br>

@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged'])) {
 <html lang="pl">
     <head>
         <meta charset="UTF-8">
-        <title>Zarzadzaj portfelem</title>
+        <title>Panel uzytkownika</title>
 
         <link rel="stylesheet" href="../css/main-theme.css">
     </head>
@@ -43,7 +43,7 @@ if (!isset($_SESSION['logged'])) {
                                 echo $_SESSION['rentedBikes'];
                                 ?>
                             </span>
-                            <a class="user-info__logout-button" href="../../logout.php">Wyloguj sie</a>
+                            <a class="user-info__logout-button" href="../php/logout.php">Wyloguj sie</a>
                         </div>
                     </li>
                     <li>
@@ -65,63 +65,42 @@ if (!isset($_SESSION['logged'])) {
             </nav>
 
             <main class="rents">
-
-                <div class="wallet-info">
-                    <p>Stan konta:
-                        <span> 132,32
-                            <?php
-
-                            ?>
-                        </span>
-                        zl
-                    </p>
-
-                    <p>Zalegle platnosci:
-                        <span> 0
-                            <?php
-
-                            ?>
-                        </span>
-                        zl
-                    </p>
-
-                    <form action="#" method="post">
-                        <button class="addFunds" value="" name="money">Doladuj konto</button>
-                    </form>
-                </div>
-
-                <div class="wallet-history">
-                    <p>Historia portfela:</p>
-                    <ul>
-                        <?php
-                            echo '<li>Zaplacono 14,50 zl</li>'
-                        ?>
-                    </ul>
-                </div>
-
+                <?php
+                if(isset($_SESSION['activeRents']))
+                    foreach ($_SESSION['activeRents'] as $rent){
+                        echo <<< EOT
+                        <div class="rents__rent rents__rent--active">
+                            <div class="rents__rent-info">
+                                <span class="rents__rent-label">Data wypozyczenia:
+                                    <span class="rents__rent-date">{$rent['rentDate']}</span>
+                                </span>
+                                <span class="rents__rent-label">Stacja wypozyczenia:
+                                    <span class="rents__rent-station"> {$rent['rentStationAddress']}</span>
+                                </span>
+                            </div>
+                            <div class="rents__rent-info">
+                                <span class="rents__rent-label">Data oddania:
+                                    <span class="rents__rent-date">--</span>
+                                </span>
+                                <span class="rents__rent-label">Stacja oddania:
+                                    <span class="rents__rent-station">--</span>
+                                </span>
+                            </div>
+                            <span class="rents__rent-label">
+                                <form action="../../returnBike.php" method="post">
+                                    <button name="return" value="{$rent['rentId']}">Oddawaj!</button>
+                                </form>
+                            </span>
+                            <span class="rents__rent-label">Oplata:
+                                <span class="rents__rent-cost"></span>
+                            </span>
+                        </div>
+EOT;
+                    }
+                ?>
             </main>
 
         </div>
-
-        <script>
-            const button = document.querySelector( '.addFunds' );
-
-            function addFunds( e ) {
-                e.preventDefault();
-
-                const value = window.prompt( "Podaj kwote doladowania: " );
-                this.value = value;
-
-                const wallet = document.querySelector( '.wallet-info span' );
-
-                const current = parseFloat( wallet.innerHTML.replace( ',', '.' ) );
-                const added = parseFloat( value.replace( ',', '.' ) );
-
-                wallet.innerHTML =  current + added;
-            }
-
-            button.addEventListener( 'click', addFunds );
-        </script>
-
     </body>
+
 </html>
