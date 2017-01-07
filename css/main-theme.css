@@ -2,6 +2,10 @@ body{
     background-color: #d5d5d5;;
 }
 
+.error{
+    color: red;
+}
+
 .containter {
     width: 1000px;
     margin-left: auto;

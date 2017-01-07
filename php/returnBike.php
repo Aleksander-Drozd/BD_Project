@@ -26,11 +26,11 @@ $stationId = htmlentities($stationId, ENT_QUOTES, "UTF-8");
 $stationId = mysqli_real_escape_string($dbConnection, $stationId);
 
 if($dbConnection -> connect_errno != 0)
-    handleError('Blad systemu 1');
+    handleError('Blad systemu');
 
 if($result = @$dbConnection -> query("select customer_id, bike_id, rent_date from rents_history WHERE id='$rentId'")){
     if ($result -> num_rows != 1)
-        handleError('Blad systemu 2');
+        handleError('Blad systemu');
 
     $rent = $result -> fetch_assoc();
     $result -> free_result();
@@ -42,14 +42,14 @@ if($result = @$dbConnection -> query("select customer_id, bike_id, rent_date fro
         handleError('Blad systemu 3');
 }
 else
-    handleError('Blad systemu 4');
+    handleError('Blad systemu');
 
 if ($result = @$dbConnection -> query("SELECT id FROM stations WHERE id='$stationId'")) {
     if ($result -> num_rows == 0)
-        handleError('Blad systemu 5');
+        handleError('Blad systemu');
     $result -> free_result();
 }else
-    handleError('Blad systemu 6');
+    handleError('Blad systemu');
 
 $dateTime = new DateTime();
 $currentDate = $dateTime -> format('Y-m-d H:i:s');
@@ -58,11 +58,11 @@ $charge = $rentDuration -> format('%d') * 50 + $rentDuration -> format('%h') * 5
 
 //ToDo Transaction
 if (!@$dbConnection -> query("UPDATE rents_history SET return_date = '$currentDate', return_station_id = '$stationId', charge = '$charge' WHERE id = '$rentId'"))
-    handleError('Blad systemu 7');
+    handleError('Blad systemu');
 if (!@$dbConnection -> query("UPDATE bikes SET rented = 0, station_id = '$stationId' WHERE id = '$bikeId'"))
-    handleError('Blad systemu 8');
+    handleError('Blad systemu');
 if (!@$dbConnection -> query("UPDATE customers SET rented_bikes = rented_bikes - 1, wallet = wallet - '$charge' WHERE id = '{$_SESSION['id']}'"))
-    handleError('Blad systemu 9');
+    handleError('Blad systemu');
 
 $dbConnection -> close();
 
