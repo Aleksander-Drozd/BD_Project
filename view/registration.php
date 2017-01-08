@@ -20,6 +20,9 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
         <link rel="stylesheet" href="../css/main-style.css">
     </head>
     <body>
+        <?php
+        displayError('systemError');
+        ?>
         <form action="../php/register.php" method="post">
             <p><label for="first-name-input">Imie</label>
             <input type="text" id="first-name-input" name="firstName"></p>
@@ -42,7 +45,7 @@ if(isset($_SESSION['logged']) && $_SESSION['logged'] == true){
             displayError('phoneNumber');
             ?>
             <p><label for="password-input">Haslo</label>
-            <input type="text" id="password-input" name="password"></p>
+            <input type="password" id="password-input" name="password"></p>
             <?php
             displayError('password');
             ?>
