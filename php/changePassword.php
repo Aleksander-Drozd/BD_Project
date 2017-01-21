@@ -22,7 +22,7 @@ function checkInput($input){
     $cleanInput = mysqli_real_escape_string($dbConnection, $cleanInput);
 
     if ($input != $cleanInput){
-        exitWithError(10);
+        exitWithError(1);
     }
 }
 
@@ -33,7 +33,7 @@ function query($query){
         $result = $dbConnection -> query($query);
         return $result;
     }catch (Exception $e){
-        exitWithError(21);
+        exitWithError(2);
     }
 }
 
@@ -53,7 +53,7 @@ mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
 try{
     $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
 } catch (Exception $e){
-    exitWithError(22);
+    exitWithError(2);
 }
 
 checkInput($oldPassword);
@@ -61,12 +61,12 @@ checkInput($newPassword);
 checkInput($newPassword2);
 
 if (mb_strlen($newPassword, 'UTF-8') < 8 || mb_strlen($newPassword, 'UTF-8') > 30)
-    exitWithError(41);
+    exitWithError(4);
 
 $result = query("SELECT password FROM customers WHERE id='{$_SESSION['id']}'");
 
 if ($result -> num_rows != 1)
-    exitWithError(23);
+    exitWithError(2);
 
 $customer = $result -> fetch_assoc();
 $result -> free_result();
@@ -74,10 +74,10 @@ $result -> free_result();
 $currentPassword = $customer['password'];
 
 if (!password_verify($oldPassword, $customer['password']))
-    exitWithError(51);
+    exitWithError(5);
 
 if ($newPassword != $newPassword2)
-    exitWithError(31);
+    exitWithError(3);
 
 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
