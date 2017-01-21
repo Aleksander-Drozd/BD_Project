@@ -81,13 +81,31 @@ if (!isset($_SESSION['logged'])) {
                         }
                     ?>
 
-                    <form action="#" method="post">
-                        <input id="money" type="text" />
-                        <button class="addFunds" name="money">Doladuj konto</button>
+                    <form action="../php/addFounds.php" method="post">
+                        <label for="money">Kwota doladowania:</label><br>
+                        <input type=text id="money" name="money">
+                        <button type="submit">Doladuj konto</button>
                     </form>
                 </div>
 
                 <div class="wallet-history">
+                    <?php
+                    if(isset($_GET['error'])){
+                        switch ($_GET['error']){
+                            case 0:
+                                echo 'Pomyslnie dodano fundusze<br>';
+                                break;
+                            case 1:
+                                echo '<span class="error">Nie udalo sie doladowac konta</span><br>';
+                                break;
+                            case 2:
+                                echo 'Wprowadzono niepoprawna kwote<br>';
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    ?>
                     <p>Historia portfela:</p>
                     <ul>
                         <?php

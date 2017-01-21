@@ -85,7 +85,7 @@ validate($password, 'password');
 validate($phoneNumber, 'phoneNumber');
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-if (!is_numeric($phoneNumber))
+if (!is_int($phoneNumber))
     $_SESSION['registrationErrors']['phoneNumber'] = 'Nieprawidlowy numer telefonu';
 
 if (!empty($_SESSION['registrationErrors'])) {
