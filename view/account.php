@@ -64,6 +64,28 @@ if (!isset($_SESSION['logged'])) {
                 </ol>
             </nav>
 
+            <?php
+            require_once '../php/databaseConnect.php';
+
+            mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
+
+            try{
+                $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
+            } catch (Exception $e){
+                exit();
+            }
+
+            try{
+                $result = $dbConnection -> query("SELECT email, phone_number FROM customers where id='{$_SESSION['id']}'");
+                $customer = $result -> fetch_assoc();
+                $result -> free_result();
+
+                $email = $customer['email'];
+                $phoneNumber = $customer['phone_number'];
+            } catch (Exception $e){}
+
+            ?>
+
             <main class="rents">
                 <div>
                     <p>Imie:
@@ -83,21 +105,23 @@ if (!isset($_SESSION['logged'])) {
                     <p>E-mail:
                         <span>
                             <?php
-                                //TODO Get e-mail from db
+                            if (isset($email))
+                                echo $email;
                             ?>
                         </span>
-                    </p>
-                    <p>
-                        <form action="change-password.php" method="post">
-                            <button>Zmien haslo</button>
-                        </form>
                     </p>
                     <p>Telefon:
                         <span>
                             <?php
-                                // TODO Get phone number form db
+                            if (isset($phoneNumber))
+                                echo $phoneNumber;
                             ?>
                         </span>
+                    </p>
+                    <p>
+                    <form action="change-password.php" method="post">
+                        <button>Zmien haslo</button>
+                    </form>
                     </p>
                 </div>
             </main>
