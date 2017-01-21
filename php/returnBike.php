@@ -54,7 +54,14 @@ if ($result = @$dbConnection -> query("SELECT id FROM stations WHERE id='$statio
 $dateTime = new DateTime();
 $currentDate = $dateTime -> format('Y-m-d H:i:s');
 $rentDuration = $dateTime -> diff($rentDate);
-$charge = $rentDuration -> format('%d') * 50 + $rentDuration -> format('%h') * 5;
+$charge = intval($rentDuration -> format('%d')) * 46;
+
+if ($rentDuration -> format('%i') - 20 > 0) {
+    $charge += (intval($rentDuration -> format('%h')) * 2) + 2;
+} else {
+    $charge += (intval($rentDuration -> format('%h')) * 2);
+}
+
 
 //ToDo Transaction
 if (!@$dbConnection -> query("UPDATE rents_history SET return_date = '$currentDate', return_station_id = '$stationId', charge = '$charge' WHERE id = '$rentId'"))
