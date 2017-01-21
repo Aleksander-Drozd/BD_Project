@@ -73,8 +73,7 @@ if($result = $dbConnection -> query("SELECT email FROM customers WHERE email = '
     if ($result -> num_rows != 0)
         $_SESSION['registrationErrors']['email'] = 'Podany email juz istnieje w bazie';
     $result -> free_result();
-}
-else{
+} else {
     $_SESSION['registrationErrors']['systemError'] = 'Blad systemu';
     header('Location: ../view/registration.php');
     exit();
@@ -84,6 +83,7 @@ validate($firstName, 'firstName');
 validate($lastName, 'lastName');
 validate($password, 'password');
 validate($phoneNumber, 'phoneNumber');
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 if (!is_numeric($phoneNumber))
     $_SESSION['registrationErrors']['phoneNumber'] = 'Nieprawidlowy numer telefonu';
@@ -97,7 +97,7 @@ if (!empty($_SESSION['registrationErrors'])) {
 header('Location: ../view/index.php');
 
 try{
-    $dbConnection -> query("INSERT INTO customers (id, first_name, last_name, email, `password`, phone_number) VALUES (NULL, '$firstName', '$lastName', '$email', '$password', '$phoneNumber')");
+    $dbConnection -> query("INSERT INTO customers (id, first_name, last_name, email, `password`, phone_number) VALUES (NULL, '$firstName', '$lastName', '$email', '$hashedPassword', '$phoneNumber')");
 }catch (Exception $e){
     header('Location: ../view/registration.php');
     $_SESSION['registrationErrors']['systemError'] = 'Blad systemu';
