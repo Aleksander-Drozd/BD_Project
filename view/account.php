@@ -88,7 +88,7 @@ if (!isset($_SESSION['logged'])) {
                         </span>
                     </p>
                     <p>
-                        <form action="changePassword.php" method="post">
+                        <form action="change-password.php" method="post">
                             <button>Zmien haslo</button>
                         </form>
                     </p>
