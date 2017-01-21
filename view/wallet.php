@@ -70,10 +70,9 @@ if (!isset($_SESSION['logged'])) {
                     <p>Stan konta:
                         <span>
                             <?php
-                                echo $_SESSION['wallet'];
+                                echo $_SESSION['wallet'].' zl';
                             ?>
                         </span>
-                         zl
                     </p>
 
                     <?php
@@ -84,7 +83,7 @@ if (!isset($_SESSION['logged'])) {
 
                     <form action="#" method="post">
                         <input id="money" type="text" />
-                        <button class="addFunds" value="" name="money">Doladuj konto</button>
+                        <button class="addFunds" name="money">Doladuj konto</button>
                     </form>
                 </div>
 
@@ -92,7 +91,26 @@ if (!isset($_SESSION['logged'])) {
                     <p>Historia portfela:</p>
                     <ul>
                         <?php
-                            echo '<li>Zaplacono 14,50 zl</li>'
+                        require_once '../php/databaseConnect.php';
+
+                        mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
+
+                        try{
+                            $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
+                            $result = $dbConnection -> query("SELECT return_date, charge from rents_history where id='{$_SESSION['id']}'");
+
+                            if($result -> num_rows == 0)
+                                exit();
+                        } catch (Exception $e){
+                            exit();
+                        }
+
+                        while ($rent = $result -> fetch_assoc()){
+                            $date = $rent['return_date'];
+                            $charge = $rent['charge'];
+
+                            echo "<li>$date -$charge zl</li>";
+                        }
                         ?>
                     </ul>
                 </div>
