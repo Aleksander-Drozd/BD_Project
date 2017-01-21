@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+function displayError($errorMessage){
+    echo "<span class='error'>$errorMessage</span><br><br>";
+}
+
 if (!isset($_SESSION['logged'])) {
     header("Location: index.php");
     exit();
@@ -12,6 +17,7 @@ if (!isset($_SESSION['logged'])) {
     <title>Zarzadzaj portfelem</title>
 
     <link rel="stylesheet" href="../css/main-theme.css">
+    <link rel="stylesheet" href="../css/change-password.css">
 </head>
 <body>
 
@@ -33,16 +39,16 @@ if (!isset($_SESSION['logged'])) {
                     </p>
                     Stan portfela:
                     <span class="user-info__details">
-                                        <?php
-                                        echo $_SESSION['wallet'].'zl';
-                                        ?>
-                                    </span><br>
+                        <?php
+                        echo $_SESSION['wallet'].'zl';
+                        ?>
+                    </span><br>
                     Wypozyczonych rowerow:
                     <span class="user-info__details">
-                                        <?php
-                                        echo $_SESSION['rentedBikes'];
-                                        ?>
-                                    </span>
+                        <?php
+                        echo $_SESSION['rentedBikes'];
+                        ?>
+                    </span>
                     <a class="user-info__logout-button" href="../php/logout.php">Wyloguj sie</a>
                 </div>
             </li>
@@ -59,22 +65,47 @@ if (!isset($_SESSION['logged'])) {
                 <a href="wallet.php" class="nav-link">Zarzadzaj portfelem</a>
             </li>
             <li>
-                <a href="#" class="nav-link">Moje konto</a>
+                <a href="account.php" class="nav-link">Moje konto</a>
             </li>
         </ol>
     </nav>
 
     <main class="rents">
+        <?php
+        if (isset($_GET['error'])){
+            switch ($_GET['error']){
+                case 0:
+                    echo 'Haslo pomyslnie zmienione <br><br>';
+                    break;
+                case 1:
+                    displayError('Bledne dane');
+                    break;
+                case 2:
+                    displayError('Blad systemu');
+                    break;
+                case 3:
+                    displayError('Podane hasla nie sa takie same');
+                    break;
+                case 4:
+                    displayError('Bledne haslo');
+                    break;
+                case 5:
+                    displayError('Bledne aktualne haslo');
+                    break;
+                default:
+                    break;
+            }
+        }
+        ?>
         <div>
             <form action="../php/changePassword.php" method="post">
                 <label for="oldPassword">Podaj stare haslo: </label>
-                <input type="password" id="newPassword"><br>
+                <input type="password" name="oldPassword"><br>
                 <label for="newPassword">Podaj nowe haslo: </label>
-                <input type="password" id="oldPassword"><br>
+                <input type="password" name="newPassword"><br>
                 <label for="newPassword2">Powtorz nowe haslo: </label>
-                <input type="password" id="newPassword2"><br>
-                <button>Zapisz</button>
-                <button>Anuluj</button>
+                <input type="password" name="newPassword2"><br><br>
+                <button type="submit">Zapisz</button>
             </form>
         </div>
     </main>
