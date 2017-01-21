@@ -94,6 +94,7 @@ if (!isset($_SESSION['logged'])) {
 
             if(isset($_SESSION['rentSuccess'])) {
                 echo '<div class="answer">Wypozyczono!</div>';
+                echo '<div class="answer">Kod odbioru: <b>'.rand(100000, 999999).'</b></div>';
                 unset($_SESSION['rentSuccess']);
             }
             ?>
