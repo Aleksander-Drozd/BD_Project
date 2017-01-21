@@ -33,16 +33,16 @@ if (!isset($_SESSION['logged'])) {
                             </p>
                             Stan portfela:
                             <span class="user-info__details">
-                                        <?php
-                                        echo $_SESSION['wallet'].'zl';
-                                        ?>
-                                    </span><br>
+                                <?php
+                                echo $_SESSION['wallet'].'zl';
+                                ?>
+                            </span><br>
                             Wypozyczonych rowerow:
                             <span class="user-info__details">
-                                        <?php
-                                        echo $_SESSION['rentedBikes'];
-                                        ?>
-                                    </span>
+                                <?php
+                                echo $_SESSION['rentedBikes'];
+                                ?>
+                            </span>
                             <a class="user-info__logout-button" href="../php/logout.php">Wyloguj sie</a>
                         </div>
                     </li>
@@ -59,7 +59,7 @@ if (!isset($_SESSION['logged'])) {
                         <a href="wallet.php" class="nav-link">Zarzadzaj portfelem</a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link">Moje konto</a>
+                        <a href="account.php" class="nav-link">Moje konto</a>
                     </li>
                 </ol>
             </nav>
