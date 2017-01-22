@@ -16,7 +16,12 @@ if(!isset($_POST['return']) || !isset($_POST['stations'])){
 }
 
 require_once 'databaseConnect.php';
-$dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
+
+try{
+    $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
+}catch (mysqli_sql_exception $e){
+    handleError('Blad systemu');
+}
 
 $rentId = $_POST['return'];
 $rentId = htmlentities($rentId, ENT_QUOTES, "UTF-8");
@@ -25,10 +30,9 @@ $stationId = $_POST['stations'];
 $stationId = htmlentities($stationId, ENT_QUOTES, "UTF-8");
 $stationId = mysqli_real_escape_string($dbConnection, $stationId);
 
-if($dbConnection -> connect_errno != 0)
-    handleError('Blad systemu');
+try{
+    $result = $dbConnection -> query("select customer_id, bike_id, rent_date from rents_history WHERE id='$rentId'");
 
-if($result = @$dbConnection -> query("select customer_id, bike_id, rent_date from rents_history WHERE id='$rentId'")){
     if ($result -> num_rows != 1)
         handleError('Blad systemu');
 
@@ -40,16 +44,19 @@ if($result = @$dbConnection -> query("select customer_id, bike_id, rent_date fro
 
     if($rent['customer_id'] != $_SESSION['id'])
         handleError('Blad systemu 3');
-}
-else
+}catch (mysqli_sql_exception $e){
     handleError('Blad systemu');
+}
 
-if ($result = @$dbConnection -> query("SELECT id FROM stations WHERE id='$stationId'")) {
+try{
+    $result = $dbConnection -> query("SELECT id FROM stations WHERE id='$stationId'");
+
     if ($result -> num_rows == 0)
         handleError('Blad systemu');
     $result -> free_result();
-}else
+}catch (mysqli_sql_exception $e){
     handleError('Blad systemu');
+}
 
 $dateTime = new DateTime();
 $currentDate = $dateTime -> format('Y-m-d H:i:s');
@@ -62,14 +69,14 @@ if ($rentDuration -> format('%i') - 20 > 0) {
     $charge += (intval($rentDuration -> format('%h')) * 2);
 }
 
-
 //ToDo Transaction
-if (!@$dbConnection -> query("UPDATE rents_history SET return_date = '$currentDate', return_station_id = '$stationId', charge = '$charge' WHERE id = '$rentId'"))
+try{
+    $dbConnection -> query("UPDATE rents_history SET return_date = '$currentDate', return_station_id = '$stationId', charge = '$charge' WHERE id = '$rentId'");
+    $dbConnection -> query("UPDATE bikes SET rented = 0, station_id = '$stationId' WHERE id = '$bikeId'");
+    $dbConnection -> query("UPDATE customers SET rented_bikes = rented_bikes - 1, wallet = wallet - '$charge' WHERE id = '{$_SESSION['id']}'");
+}catch (mysqli_sql_exception $e){
     handleError('Blad systemu');
-if (!@$dbConnection -> query("UPDATE bikes SET rented = 0, station_id = '$stationId' WHERE id = '$bikeId'"))
-    handleError('Blad systemu');
-if (!@$dbConnection -> query("UPDATE customers SET rented_bikes = rented_bikes - 1, wallet = wallet - '$charge' WHERE id = '{$_SESSION['id']}'"))
-    handleError('Blad systemu');
+}
 
 $dbConnection -> close();
 
