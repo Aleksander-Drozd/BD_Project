@@ -16,6 +16,7 @@ if(!isset($_POST['return']) || !isset($_POST['stations'])){
 }
 
 require_once 'databaseConnect.php';
+mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
 
 try{
     $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
