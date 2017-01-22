@@ -110,25 +110,27 @@ if (!isset($_SESSION['logged'])) {
                     <ul>
                         <?php
                         require_once '../php/databaseConnect.php';
-
                         mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
 
                         try{
                             $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
-                            $result = $dbConnection -> query("SELECT return_date, charge from rents_history where id='{$_SESSION['id']}'");
+                            $result = $dbConnection -> query("SELECT return_date, charge from rents_history where customer_id='{$_SESSION['id']}'");
 
                             if($result -> num_rows == 0)
                                 exit();
                         } catch (Exception $e){
                             exit();
                         }
-
+                        
                         while ($rent = $result -> fetch_assoc()){
                             $date = $rent['return_date'];
                             $charge = $rent['charge'];
 
                             echo "<li>$date -$charge zl</li>";
                         }
+
+                        $result -> free_result();
+                        $dbConnection -> close();
                         ?>
                     </ul>
                 </div>
