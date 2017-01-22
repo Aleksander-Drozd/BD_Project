@@ -69,12 +69,16 @@ if ($rentDuration -> format('%i') - 20 > 0) {
     $charge += (intval($rentDuration -> format('%h')) * 2);
 }
 
-//ToDo Transaction
 try{
+    $dbConnection -> begin_transaction();
+
     $dbConnection -> query("UPDATE rents_history SET return_date = '$currentDate', return_station_id = '$stationId', charge = '$charge' WHERE id = '$rentId'");
     $dbConnection -> query("UPDATE bikes SET rented = 0, station_id = '$stationId' WHERE id = '$bikeId'");
     $dbConnection -> query("UPDATE customers SET rented_bikes = rented_bikes - 1, wallet = wallet - '$charge' WHERE id = '{$_SESSION['id']}'");
+
+    $dbConnection -> commit();
 }catch (mysqli_sql_exception $e){
+    $dbConnection -> rollback();
     handleError('Blad systemu');
 }
 
@@ -90,4 +94,3 @@ foreach ($_SESSION['activeRents'] as $index => $rent){
         exit();
     }
 }
-

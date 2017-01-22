@@ -55,8 +55,6 @@ $currentDateTime = $dateTime -> format('Y-m-d H:i:s');
 
 $insertRentQuery = "INSERT INTO rents_history (id, customer_id, bike_id, rent_station_id, rent_date, return_station_id, return_date, charge) VALUES (NULL, {$_SESSION['id']}, $bikeId, $stationId, '$currentDateTime', NULL, NULL, NULL);";
 
-//ToDo Transaction
-
 try{
     $dbConnection -> begin_transaction();
 
