@@ -114,7 +114,7 @@ if (!isset($_SESSION['logged'])) {
 
                         try{
                             $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
-                            $result = $dbConnection -> query("SELECT return_date, charge from rents_history where customer_id='{$_SESSION['id']}'");
+                            $result = $dbConnection -> query("SELECT return_date, charge from rents_history where customer_id='{$_SESSION['id']}' ORDER BY return_date desc");
 
                             if($result -> num_rows == 0)
                                 exit();
@@ -124,6 +124,9 @@ if (!isset($_SESSION['logged'])) {
                         
                         while ($rent = $result -> fetch_assoc()){
                             $date = $rent['return_date'];
+                            $date = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+                            $date = $date -> format('d-m-y H:i');
+
                             $charge = $rent['charge'];
 
                             echo "<li>$date -$charge zl</li>";
