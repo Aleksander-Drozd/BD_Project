@@ -51,17 +51,22 @@ if ($_SESSION['rentedBikes'] > 5)
     handleError('Wypozyczono maksymalną ilosc rowerow');
 
 $dateTime = new DateTime();
-$currentDateTime =  $dateTime -> format('Y-m-d H:i:s');
+$currentDateTime = $dateTime -> format('Y-m-d H:i:s');
 
 $insertRentQuery = "INSERT INTO rents_history (id, customer_id, bike_id, rent_station_id, rent_date, return_station_id, return_date, charge) VALUES (NULL, {$_SESSION['id']}, $bikeId, $stationId, '$currentDateTime', NULL, NULL, NULL);";
 
 //ToDo Transaction
 
 try{
+    $dbConnection -> begin_transaction();
+
     $dbConnection -> query($insertRentQuery);
     $dbConnection -> query("UPDATE bikes SET rented = 1, station_id = NULL WHERE id = $bikeId");
     $dbConnection -> query("UPDATE customers SET rented_bikes = rented_bikes + 1 WHERE id = {$_SESSION['id']}");
+
+    $dbConnection -> commit();
 }catch (mysqli_sql_exception $e){
+    $dbConnection -> rollback();
     handleError('Blad systemu');
 }
 
