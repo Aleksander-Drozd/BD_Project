@@ -15,32 +15,35 @@ if(!isset($_POST['stations'])){
 }
 
 require_once 'databaseConnect.php';
-$dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
+mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
+
+try{
+    $dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
+}catch (mysqli_sql_exception $e){
+    handleError('Blad systemu');
+}
 
 $stationId = $_POST['stations'];
 $stationId = htmlentities($stationId, ENT_QUOTES, "UTF-8");
 $stationId = mysqli_real_escape_string($dbConnection, $stationId);
 
-if($dbConnection -> connect_errno != 0) {
-    handleError('Blad systemu');
-}
+try{
+    $result = $dbConnection -> query("SELECT id FROM stations WHERE id=$stationId");
 
-if ($result = @$dbConnection -> query("SELECT id FROM stations WHERE id=$stationId")) {
     if ($result -> num_rows == 0)
         handleError('Nie udalo sie wypozyczyc roweru');
     $result -> free_result();
-}else
-    handleError('Blad systemu');
 
-if ($result = @$dbConnection -> query("SELECT id FROM bikes WHERE station_id=$stationId LIMIT 1")) {
+    $result = $dbConnection -> query("SELECT id FROM bikes WHERE station_id=$stationId LIMIT 1");
     if ($result -> num_rows == 0)
         handleError('Brak wolnych rowerow przy wybranej stacji');
 
     $bike = $result -> fetch_assoc();
     $bikeId = $bike['id'];
     $result -> free_result();
-}else
+}catch (mysqli_sql_exception $e){
     handleError('Blad systemu');
+}
 
 if ($_SESSION['wallet'] < 10)
     handleError('Za malo srodkow na koncie');
@@ -54,32 +57,35 @@ $insertRentQuery = "INSERT INTO rents_history (id, customer_id, bike_id, rent_st
 
 //ToDo Transaction
 
-if (!@$dbConnection -> query($insertRentQuery))
+try{
+    $dbConnection -> query($insertRentQuery);
+    $dbConnection -> query("UPDATE bikes SET rented = 1, station_id = NULL WHERE id = $bikeId");
+    $dbConnection -> query("UPDATE customers SET rented_bikes = rented_bikes + 1 WHERE id = {$_SESSION['id']}");
+}catch (mysqli_sql_exception $e){
     handleError('Blad systemu');
-if (!@$dbConnection -> query("UPDATE bikes SET rented = 1, station_id = NULL WHERE id = $bikeId"))
-    handleError('Blad systemu');
-if (!@$dbConnection -> query("UPDATE customers SET rented_bikes = rented_bikes + 1 WHERE id = {$_SESSION['id']}"))
-    handleError('Blad systemu');
+}
 
-if ($result = @$dbConnection -> query("select address from stations where id=$stationId")){
+try{
+    $result = $dbConnection -> query("select address from stations where id=$stationId");
     $station = $result -> fetch_assoc();
     $rent['rentStationAddress'] = $station['address'];
     $result -> free_result();
+}catch (mysqli_sql_exception $e){
+    handleError('Blad systemu');
 }
-else
-    handleError('Blad systenu');
 
-if ($result = @$dbConnection -> query("select id from rents_history where customer_id={$_SESSION['id']} AND rent_date='$currentDateTime'")){
+try{
+    $result = @$dbConnection -> query("select id from rents_history where customer_id={$_SESSION['id']} AND rent_date='$currentDateTime'");
     $data = $result -> fetch_assoc();
     $rent['rentId'] = $data['id'];
     $result -> free_result();
-}
-else
+}catch (mysqli_sql_exception $e){
     handleError('Blad systemu');
+}
 
+$rent['rentDate'] = $currentDateTime;
 $_SESSION['rentSuccess'] = true;
 $_SESSION['rentedBikes']++;
-$rent['rentDate'] = $currentDateTime;
 $_SESSION['activeRents'][] = $rent;
 
 $dbConnection -> close();
