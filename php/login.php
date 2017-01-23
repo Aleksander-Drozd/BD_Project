@@ -16,6 +16,7 @@
     if($dbConnection -> connect_errno != 0)
         echo "Blad polaczenia z baza danych";
     else{
+        mysqli_set_charset($dbConnection, 'utf8');
         if($result = @$dbConnection -> query(sprintf("Select * from customers where email='%s'",
                                                 mysqli_real_escape_string($dbConnection, $email)))){
             if($result -> num_rows == 1){

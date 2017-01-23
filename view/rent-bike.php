@@ -86,7 +86,7 @@ if (!isset($_SESSION['logged'])) {
                     } catch (Exception $e){
                         echo "Blad polaczenia z baza danych";
                     }
-                    
+
                     $dbConnection -> close();
                     ?>
                 </select>

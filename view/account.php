@@ -71,6 +71,7 @@ if (!isset($_SESSION['logged'])) {
 
             try{
                 $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
+                $dbConnection -> set_charset('utf8');
             } catch (Exception $e){
                 exit();
             }
