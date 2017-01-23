@@ -71,17 +71,19 @@ if (!isset($_SESSION['logged'])) {
 
         if($dbConnection -> connect_errno != 0)
             echo "Blad polaczenia z baza danych";
-        else if ($result = @$dbConnection -> query("SELECT * FROM rents_history WHERE customer_id={$_SESSION['id']} AND return_date IS NOT NULL ORDER BY return_date desc")) {
-            while ($rent = mysqli_fetch_assoc($result)) {
-                if ($r = @$dbConnection -> query("SELECT address FROM stations WHERE id={$rent['rent_station_id']}")) {
-                    $station = $r -> fetch_assoc();
-                    $rentStation = $station['address'];
-                }
-                if ($r = @$dbConnection -> query("SELECT address FROM stations WHERE id={$rent['return_station_id']}")) {
-                    $station = $r -> fetch_assoc();
-                    $returnStation = $station['address'];
-                }
-                echo <<< EOT
+        else {
+            mysqli_set_charset($dbConnection, 'utf8');
+            if ($result = @$dbConnection -> query("SELECT * FROM rents_history WHERE customer_id={$_SESSION['id']} AND return_date IS NOT NULL ORDER BY return_date desc")) {
+                while ($rent = mysqli_fetch_assoc($result)) {
+                    if ($r = @$dbConnection -> query("SELECT address FROM stations WHERE id={$rent['rent_station_id']}")) {
+                        $station = $r -> fetch_assoc();
+                        $rentStation = $station['address'];
+                    }
+                    if ($r = @$dbConnection -> query("SELECT address FROM stations WHERE id={$rent['return_station_id']}")) {
+                        $station = $r -> fetch_assoc();
+                        $returnStation = $station['address'];
+                    }
+                    echo <<< EOT
                     <div class="rents__rent rents__rent--active">
                         <div class="rents__rent-info">
                             <span class="rents__rent-label">Data wypozyczenia:
@@ -104,8 +106,9 @@ if (!isset($_SESSION['logged'])) {
                         </span>
                     </div>
 EOT;
+                }
+                $result -> free_result();
             }
-            $result -> free_result();
         }
         $dbConnection -> close();
             foreach ($_SESSION['activeRents'] as $rent){
