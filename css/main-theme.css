@@ -10,12 +10,10 @@ body{
     width: 1000px;
     margin-left: auto;
     margin-right: auto;
-    border: solid #933a5d 2px;
 }
 .navigation {
     min-width: 200px;
     display: inline-block;
-    border: solid #bada55 2px;
     background-color: #bababa;
 }
 
