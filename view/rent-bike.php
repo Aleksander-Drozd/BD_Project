@@ -71,16 +71,22 @@ if (!isset($_SESSION['logged'])) {
                 <select name="stations" id="stations">
                     <?php
                     require_once '../php/databaseConnect.php';
-                    $dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
+                    mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
 
-                    if($dbConnection -> connect_errno != 0)
-                        echo "Blad polaczenia z baza danych";
-                    else if ($result = @$dbConnection -> query('SELECT * FROM stations ORDER BY address')) {
+                    try{
+                        $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
+                        $dbConnection -> set_charset('utf8');
+
+                        $result = $dbConnection -> query('SELECT * FROM stations ORDER BY address');
+
                         while ($station = mysqli_fetch_assoc($result)) {
                             echo "<option value=\"{$station['id']}\">{$station['address']}</option>";
                         }
                         $result -> free_result();
+                    } catch (Exception $e){
+                        echo "Blad polaczenia z baza danych";
                     }
+                    
                     $dbConnection -> close();
                     ?>
                 </select>
