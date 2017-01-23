@@ -72,23 +72,29 @@ if (!isset($_SESSION['logged'])) {
                     unset($_SESSION['returnError']);
                 }
 
-
-                if(isset($_SESSION['activeRents']))
+                if(isset($_SESSION['activeRents'])) {
                     require_once '../php/databaseConnect.php';
-                    $dbConnection = @new mysqli($host, $dbUser, $dbPassword, $dbName);
+                    mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
 
-                    if($dbConnection -> connect_errno != 0)
-                        exit('Blad systemu');
-                    else if ($result = @$dbConnection -> query('SELECT * FROM stations ORDER BY address')) {
+                    try{
+                        $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
+                        $dbConnection -> set_charset('utf8');
+
+                        $result = $dbConnection -> query('SELECT * FROM stations ORDER BY address');
                         $stations = array();
+
                         while ($station = mysqli_fetch_assoc($result)) {
                             $stations[] = "<option value=\"{$station['id']}\">{$station['address']}</option>";
                         }
-                        $result -> free_result();
-                    }
-                    $dbConnection -> close();
 
-                    foreach ($_SESSION['activeRents'] as $rent){
+                        $result -> free_result();
+                    }catch (SQLiteException $e){
+                        exit('Blad systemu');
+                    }
+
+                    $dbConnection->close();
+
+                    foreach ($_SESSION['activeRents'] as $rent) {
                         echo <<< EOT
                         <div class="rents__rent rents__rent--active">
                             <div class="rents__rent-info">
@@ -126,6 +132,7 @@ EOT;
                         </div>
 EOT;
                     }
+                }
                 ?>
             </main>
 
