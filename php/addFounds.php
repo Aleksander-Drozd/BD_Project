@@ -6,6 +6,7 @@
     2 - user entered NaN
  */
 session_start();
+require_once '../classes/DatabaseUtil.php';
 
 if(!isset($_POST['money'])) {
     header("Location: ../view/wallet.php");
@@ -14,18 +15,19 @@ if(!isset($_POST['money'])) {
 
 $addedFounds = $_POST['money'];
 
-if (!$addedFounds = intval($addedFounds)){
+if ($addedFounds != floatval($addedFounds)){
     header('Location: ../view/wallet.php?error=2');
     exit();
 }
 
-require_once 'databaseConnect.php';
-mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
+$statement = DatabaseUtil::prepare('UPDATE customers SET wallet = wallet + ? WHERE id = ?');
 
 try{
-    $dbConnection = new mysqli($host, $dbUser, $dbPassword, $dbName);
-    $dbConnection -> query("UPDATE customers SET wallet = wallet + '$addedFounds' WHERE id='{$_SESSION['id']}'");
-} catch (Exception $e){
+    $statement -> bindParam(1, $addedFounds);
+    $statement -> bindParam(2, $_SESSION['id']);
+
+    $statement -> execute();
+} catch (PDOException $e){
     header('Location: ../view/wallet.php?error=1');
     exit();
 }
